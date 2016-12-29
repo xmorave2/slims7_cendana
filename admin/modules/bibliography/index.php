@@ -115,6 +115,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
     $class = str_ireplace('NEW:', '', trim(strip_tags($_POST['class'])));
     $data['classification'] = trim($dbs->escape_string(strip_tags($class)));
+    $data['uid'] = $_SESSION['uid'];
 
     // check publisher
     // echo stripos($_POST['publisherID'], 'NEW:');
@@ -201,6 +202,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       /* UPDATE RECORD MODE */
       // remove input date
       unset($data['input_date']);
+      unset($data['uid']);
       // filter update record ID
       $updateRecordID = (integer)$_POST['updateRecordID'];
       // update data
@@ -227,7 +229,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           echo '<script type="text/javascript">parent.ucsUpload(\''.MWB.'bibliography/ucs_upload.php\', \'itemID[]='.$updateRecordID.'\', false);</script>';
         }
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update bibliographic data ('.$data['title'].') with biblio_id ('.$_POST['itemID'].')');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update bibliographic data ('.$data['title'].') with biblio_id ('.$updateRecordID.')');
         // close window OR redirect main page
         if ($in_pop_up) {
           $itemCollID = (integer)$_POST['itemCollID'];

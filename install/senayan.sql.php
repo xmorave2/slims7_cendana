@@ -33,10 +33,12 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio` (
   `spec_detail_info` text collate utf8_unicode_ci,
   `input_date` datetime default NULL,
   `last_update` datetime default NULL,
+  `uid` int(11) default NULL,
   PRIMARY KEY  (`biblio_id`),
   KEY `references_idx` (`gmd_id`,`publisher_id`,`language_id`,`publish_place_id`),
   KEY `classification` (`classification`),
   KEY `biblio_flag_idx` (`opac_hide`,`promoted`),
+  KEY `uid` (`uid`),
   FULLTEXT KEY `title_ft_idx` (`title`,`series_title`),
   FULLTEXT KEY `notes_ft_idx` (`notes`),
   FULLTEXT KEY `labels` (`labels`)
@@ -184,9 +186,11 @@ CREATE TABLE IF NOT EXISTS `item` (
   `invoice_date` date default NULL,
   `input_date` datetime NOT NULL,
   `last_update` datetime default NULL,
+  `uid` int(11) default NULL,
   PRIMARY KEY  (`item_id`),
   UNIQUE KEY `item_code` (`item_code`),
   KEY `item_references_idx` (`coll_type_id`,`location_id`,`item_status_id`),
+  KEY `uid` (`uid`),
   KEY `biblio_id_idx` (`biblio_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
 

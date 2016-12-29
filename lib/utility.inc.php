@@ -146,6 +146,39 @@ class utility
         }
     }
 
+####################################################
+    public static function collection_load ($obj_db, $cid)
+    {
+      if (!$obj_db->error) {
+      	$sql = 'SELECT * FROM biblio WHERE biblio_id=\''.$obj_db->escape_string($cid).'\'';
+        $_load = $obj_db->query($sql);
+        if ($_load->num_rows > 0) {
+          $_res = $_load->fetch_array();
+          return $_res;
+        } else {
+          return false;
+        }
+      } else {
+      	return false;
+      }
+    }
+####################################################
+    public static function item_load_by_id ($obj_db, $item_id)
+    {
+      if (!$obj_db->error) {
+      	$sql = 'SELECT * FROM item WHERE item_id=\''.$obj_db->escape_string($item_id).'\'';
+        $_load = $obj_db->query($sql);
+        if ($_load->num_rows > 0) {
+          $_res = $_load->fetch_array();
+          return $_res;
+        } else {
+          return false;
+        }
+      } else {
+      	return false;
+      }
+    }
+####################################################
 
     /**
      * Static Method to get an ID of database table record
@@ -282,6 +315,16 @@ class utility
                 $mix_input = filter_input(INPUT_SESSION, $mix_input);
             } else {
                 $mix_input = filter_input(INPUT_GET, $mix_input);
+            }
+        } else {
+            if ($str_input_type == 'get') {
+                $mix_input = $_GET[$mix_input];
+            } else if ($str_input_type == 'post') {
+                $mix_input = $_POST[$mix_input];
+            } else if ($str_input_type == 'cookie') {
+                $mix_input = $_COOKIE[$mix_input];
+            } else if ($str_input_type == 'session') {
+                $mix_input = $_SESSION[$mix_input];
             }
         }
 

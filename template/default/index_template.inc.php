@@ -202,6 +202,7 @@ if (isset($_GET['p']))
              <form name="advSearchForm" id="advSearchForm" action="index.php" method="get" class="form-horizontal form-search">
                 <div class="simply" >
                   <div class="input-append">
+                  <input type="hidden" name="search" value="search" />
                   <input type="text" name="title" id="title" placeholder="<?php echo __('Title'); ?>" class="input-xxlarge search-query" />
                   <button type="submit" class="btn" name="search" value="search"><?php echo __('Search'); ?></button>
                   </div>
@@ -357,6 +358,7 @@ if (isset($_GET['p']))
               <form name="advSearchForm" id="advSearchForm" action="index.php" method="get" class="form-horizontal form-search">
                 <div class="simply" >
                   <div class="input-append">
+                  <input type="hidden" name="search" value="search" />
                   <input type="text" name="title" id="title" placeholder="<?php echo __('Title'); ?>" class="input-xxlarge search-query" />
                   <button type="submit" name="search" class="btn" value="search"><?php echo __('Search'); ?></button>
                   </div>
@@ -429,7 +431,7 @@ if (isset($_GET['p']))
   if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords']) || isset($_GET['p']) ) ) :
     // query top book
     $topbook = $dbs->query('SELECT biblio_id, title, image FROM biblio WHERE
-        promoted=1 ORDER BY last_update LIMIT 10');
+        promoted=1 ORDER BY input_date DESC LIMIT 10');
     if ($num_rows = $topbook->num_rows) :
   ?>
   <div class="row topbook-container">

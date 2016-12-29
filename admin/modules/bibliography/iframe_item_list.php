@@ -30,12 +30,19 @@ define('DB_ACCESS', 'fa');
 require '../../../sysconfig.inc.php';
 // start the session
 require SB.'admin/default/session.inc.php';
+require SB.'admin/default/session_check.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-bibliography');
+
+// privileges checking
+$can_write = utility::havePrivilege('bibliography', 'w');
+if (!$can_write) {
+  die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
+}
 
 // page title
 $page_title = 'Item List';
@@ -80,7 +87,10 @@ if (isset($_POST['remove'])) {
     echo 'self.location.href = \'iframe_item_list.php?biblioID='.$bid.'\';';
     echo '</script>';
   } else {
+    $collection = utility::collection_load($dbs, $bid);
+    $item = utility::item_load_by_id($dbs, $id);
     if ($sql_op->delete('item', 'item_id='.$id)) {
+      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$item['item_code'].') with title ('.$collection['title'].')');
       echo '<script type="text/javascript">';
       echo 'alert(\''.__('Item succesfully removed!').'\');';
       echo 'self.location.href = \'iframe_item_list.php?biblioID='.$bid.'\';';
